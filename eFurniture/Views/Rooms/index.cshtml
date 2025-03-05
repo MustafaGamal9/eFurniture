@@ -1,0 +1,26 @@
+﻿@model List<eFurniture.Models.Category>
+@{
+    ViewData["Title"] = "Shop by Rooms";
+}
+
+
+<section id="roomsPage">
+    <h2>Shop by Room</h2>
+    <div class="category-grid">
+        @foreach (var category in Model)
+        {
+            <div class="category-card">
+                <a  asp-controller="Product" asp-action="Index" asp-route-categoryId="@category.CategoryId">
+                <img src="~/images/@category.CategoryImage" alt="@category.Name" class="category-image">
+                <div class="category-details">
+                    <h3 class="category-title">@category.Name</h3>
+                </div>
+                <div class="category-overlay">
+
+                   
+                </div>
+                </a>
+            </div>
+        }
+    </div>
+</section>

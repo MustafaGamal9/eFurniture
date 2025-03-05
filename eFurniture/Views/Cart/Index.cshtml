@@ -1,0 +1,152 @@
+﻿<style>
+    .cart-container {
+        max-width: 960px; 
+        margin: 20px auto;
+        padding: 20px;
+    }
+
+    h1 {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .table {
+        width: 100%;
+        margin-bottom: 20px;
+        border-collapse: collapse; 
+    }
+
+        .table th, .table td {
+            padding: 0.75rem;
+            text-align: left;
+            border-bottom: 1px solid var(--gray-200); 
+        }
+
+        .table th {
+            background-color: var(--gray-100);
+            font-weight: bold;
+        }
+
+        .table tbody tr:nth-child(even) {
+            background-color: var(--gray-50); 
+        }
+
+        .table tfoot td {
+            border-top: 2px solid var(--gray-200); 
+            font-weight: bold;
+        }
+
+        .table tfoot tr:last-child td {
+            border-bottom: none;
+        }
+
+
+    .quantity-form {
+        display: flex; 
+        align-items: center; 
+    }
+
+    .form-control-sm {
+        margin-right: 5px; 
+        width: 70px; 
+        display: inline-block; 
+    }
+
+    .btn-sm {
+        padding: 0.25rem 0.5rem;
+        font-size: 0.875rem; 
+        line-height: 1.5;
+        border-radius: 0.2rem;
+    }
+
+    .btn-outline-secondary {
+        margin-left: 5px; 
+    }
+
+    .btn-danger {
+        margin-left: 0.5rem; 
+    }
+
+    .checkout-button-container {
+        text-align: right;
+        padding-top: 1rem;
+    }
+
+    .empty-cart-message {
+        text-align: center;
+        font-style: italic;
+        color: var(--gray-500); 
+        padding: 20px;
+    }
+
+    :root {
+        --gray-50: #f8f9fa;
+        --gray-100: #f1f3f5;
+        --gray-200: #e9ecef;
+        --gray-500: #adb5bd;
+    }
+</style>
+
+@model eFurniture.ViewModels.Cart.CartViewModel
+@{
+    ViewData["Title"] = "Shopping Cart";
+    
+}
+
+<div class="cart-container">
+    <h1>Your Shopping Cart</h1>
+
+    @if (Model.CartItems != null && Model.CartItems.Any())
+    {
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Product</th>
+                    <th>Price</th>
+                    <th>Quantity</th>
+                    <th>Total</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.CartItems)
+                {
+                    <tr>
+                        <td>@item.Product.Name</td>
+                        <td>$@item.Product.Price.ToString("F2")</td>
+                        <td>
+                            <form method="post" asp-controller="Cart" asp-action="UpdateQuantity" asp-route-cartItemId="@item.CartItemId" class="quantity-form">
+                                <input type="hidden" name="cartItemId" value="@item.CartItemId" />
+                                <input type="number" name="quantity" value="@item.Quantity" min="1" class="form-control-sm" style="width: 70px; display:inline-block;" />
+                                <button type="submit" class="btn btn-sm btn-outline-secondary">Update</button>
+                            </form>
+                        </td>
+                        <td>$@(item.Product.Price * item.Quantity)</td>
+                        <td>
+                            <form method="post" asp-controller="Cart" asp-action="RemoveItem" asp-route-cartItemId="@item.CartItemId" style="display:inline-block;">
+                                <input type="hidden" name="cartItemId" value="@item.CartItemId" />
+                                <button type="submit" class="btn btn-sm btn-danger">Remove</button>
+                            </form>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td colspan="3" style="text-align: right;"><strong>Cart Total:</strong></td>
+                    <td><strong>$@Model.CartTotal.ToString("F2")</strong></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td colspan="5" class="checkout-button-container">
+                        <a asp-controller="Cart" asp-action="Checkout" class="btn btn-primary">Proceed to Checkout</a>
+                    </td>
+                </tr>
+            </tfoot>
+        </table>
+    }
+    else
+    {
+        <p class="empty-cart-message">Your cart is empty.</p>
+    }
+</div>

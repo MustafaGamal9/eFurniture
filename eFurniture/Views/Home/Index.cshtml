@@ -1,0 +1,119 @@
+﻿@model eFurniture.ViewModels.HomeViewModel
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div id="homePage" class="page active">
+    <div class="hero-section">
+        <div class="hero-content">
+            <h1>eFurniture</h1>
+            <p>Furnish your dreams with eFurniture. Discover a wide range of quality furniture to create your perfect home. From living rooms to bedrooms, find everything you need to style your space.</p>
+            <a asp-controller="Category" asp-action="Index" class="hero-button">Shop Now</a>
+        </div>
+        <div class="hero-section-image">
+            <img src="images/hero-cart.jpg" alt="Hero Image" class="hero-image">
+        </div>
+    </div>
+
+    <section class="home-categories-section">
+        <h2>Shop by Room</h2>
+        <div class="home-categories-grid">
+            @foreach (var category in Model.RoomCategories)
+            {
+                <div class="category-card">
+                    <a asp-controller="Product" asp-action="Index" asp-route-categoryId="@category.CategoryId">
+                        <img src="~/images/@category.CategoryImage" alt="@category.Name" class="category-image">
+                        <div class="category-details">
+                            <h3 class="category-title">@category.Name</h3>
+                        </div>
+                        <div class="category-overlay">
+                        </div>
+                    </a>
+                </div>
+            }
+        </div>
+    </section>
+
+    <section id="banners" class="container-fluid section banners">
+        <h1 class="section-title">Best Offers</h1>
+        <div class="banner-track">
+            <a href="#img1" class="banner-image">
+                <img src="images/offer1.jpg" alt="Image 1" class="img-fluid banner-pic">
+            </a>
+            <a href="#img2" class="banner-image">
+                <img src="images/offer2.jpg" alt="Image 2" class="img-fluid banner-pic">
+            </a>
+            <a href="#img3" class="banner-image">
+                <img src="images/offer3.jpg" alt="Image 3" class="img-fluid banner-pic">
+            </a>
+            <a href="#img4" class="banner-image">
+                <img src="images/offer4.png" alt="Image 4" class="img-fluid banner-pic">
+            </a>
+            <a href="#img5" class="banner-image">
+                <img src="images/offer5.jpg" alt="Image 5" class="img-fluid banner-pic">
+            </a>
+            <a href="#img1" class="banner-image">
+                <img src="images/offer1.jpg" alt="Image 1" class="img-fluid banner-pic">
+            </a>
+            <a href="#img2" class="banner-image">
+                <img src="images/offer2.jpg" alt="Image 2" class="img-fluid banner-pic">
+            </a>
+            <a href="#img3" class="banner-image">
+                <img src="images/offer3.jpg" alt="Image 3" class="img-fluid banner-pic">
+            </a>
+            <a href="#img4" class="banner-image">
+                <img src="images/offer4.png" alt="Image 4" class="img-fluid banner-pic">
+            </a>
+            <a href="#img5" class="banner-image">
+                <img src="images/offer5.jpg" alt="Image 5" class="img-fluid banner-pic">
+            </a>
+        </div>
+    </section>
+
+    <section class="featured-section">
+        <h2>Featured Furniture</h2>
+        <div class="featured-grid">
+            @foreach (var product in Model.FeaturedProducts)
+            {
+                <div class="product-card">
+                    <img src="~/images/@product.Image" alt="@product.Name" class="product-image">
+                    <div class="product-details">
+                        <h3 class="product-title">@product.Name</h3>
+                        <p class="product-price">$@product.Price.ToString("F2")</p>
+                    </div>
+                    <div class="product-overlay">
+                        
+                        <form asp-controller="Cart" asp-action="AddToCart" method="post">
+                            <input type="hidden" name="productId" value="@product.ProductId" />
+                            <input type="hidden" name="quantity" value="1" />
+                            <button type="submit" class="btn btn-primary">Add to Cart</button>
+                        </form>
+                    </div>
+                </div>
+            }
+        </div>
+    </section>
+
+    <section class="contact-us" id="contactSectionHome">
+        <div class="layer2">
+            <h2 style="color: white; text-shadow: none;">Contact Us</h2>
+            <form class="contact-form" asp-controller="Home" asp-action="ContactUs" method="post">
+                <div class="contact-form-group ">
+                    <label for="name">Name</label>
+                    <input type="text" class="input-form-control" id="name" placeholder="Enter your name">
+                </div>
+                <div class="contact-form-group">
+                    <label for="email">Email</label>
+                    <input type="email" class="input-form-control" id="email" placeholder="Enter your email">
+                </div>
+                <div class="contact-form-group">
+                    <label for="message">Message</label>
+                    <textarea class="form-control" id="message" rows="3"
+                              placeholder="Enter your message"></textarea>
+                </div>
+                <button type="submit" class="Shop-btn" style="align-self: center;">SEND</button>
+            </form>
+        </div>
+    </section>
+</div>
+

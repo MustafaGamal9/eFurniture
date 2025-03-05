@@ -1,0 +1,37 @@
+﻿@model List<eFurniture.Models.Product>
+
+@{
+    ViewData["Title"] = "Products";
+}
+
+<h1>Products</h1>
+
+<div class="row">
+    @if (Model != null && Model.Any())
+    {
+        @foreach (var product in Model)
+        {
+            <div id="categoryProductsPage">
+                <div class="product-grid">
+                    <img src="~/images/@product.Image" class="product-image" alt="@product.Name" style="height: 200px; object-fit: cover;">
+                    <div class="product-details">
+                        <h5 class="product-title">@product.Name</h5>
+                        <p class="card-text">Category: @product.Category?.Name</p>
+                        <p class="product-price">Price: $@product.Price</p>
+                        <form asp-controller="Cart" asp-action="AddToCart" method="post">
+                            <input type="hidden" name="productId" value="@product.ProductId" />
+                            <input type="hidden" name="quantity" value="1" />
+                            <button type="submit" class="btn btn-primary">Add to Cart</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        }
+    }
+    else
+    {
+        <div class="col">
+            <p>No products found.</p>
+        </div>
+    }
+</div>
